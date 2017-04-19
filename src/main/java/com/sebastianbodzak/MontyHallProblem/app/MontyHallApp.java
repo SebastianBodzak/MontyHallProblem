@@ -1,8 +1,10 @@
 package com.sebastianbodzak.MontyHallProblem.app;
 
+import com.sebastianbodzak.MontyHallProblem.api.MontyHallGame;
 import com.sebastianbodzak.MontyHallProblem.domain.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -17,34 +19,32 @@ public class MontyHallApp {
 
     public static void main(String[] args) {
 
-
-        Initializer initializer = new OfflineInitializer();
+        MontyHallGame montyHallGame = new MontyHallGame();
         Scanner scanner = new Scanner(System.in);
         Player player;
-        MontyHall montyHall;
         Results results = new Results();
         int chosenGate;
-        String placeHolder;
 
         askAboutQuantityOfGates();
-        initializer.prepareGame(Integer.parseInt(scanner.next()));
+        List<Gate> gameGates = montyHallGame.getListOfGatesInOfflineGame(Integer.parseInt(scanner.next()));
 
         askAboutNumberOfGames();
         int numberOfGames = Integer.parseInt(scanner.next());
 
+        MontyHall montyHall = new MontyHall(gameGates);
+
         askAboutAutoPlayerDecision();
-        placeHolder = scanner.next();
+        String placeHolder = scanner.next();
         if (placeHolder.equals("Y") || placeHolder.equals("y")) {
             player = new AutoPlayer(true);
-            montyHall = new MontyHall(initializer, player, null);
         } else {
             player = new AutoPlayer(false);
-            montyHall = new MontyHall(initializer, player, null);
         }
 
 
         for (int counterOfGames = 1; counterOfGames <= numberOfGames; counterOfGames++) {
-            chosenGate = player.chooseGate(initializer.getGates().size(), null);
+            chosenGate = player.chooseGate(gameGates.size(), null);
+            montyHall.setPlayerChoice(chosenGate);
             System.out.println("NR OF GAME: " + counterOfGames);
             System.out.println("CHOSEN GATE: " + chosenGate);
 
@@ -54,14 +54,14 @@ public class MontyHallApp {
             } else {
                 if (player.changeLastGate()) {
                     System.out.println("OK. There are only 2 gates left. Should he change his mind? Your player decision is: " + player.changeLastGate());
-                    if (initializer.getGates().get(chosenGate - 1).isEmpty()) {
+                    if (gameGates.get(chosenGate - 1).isEmpty()) {
                         results.addWin();
                     } else {
                         results.addLoss();
                     }
                 } else {
                     System.out.println("OK. There are only 2 gates left. Should he change his mind? Your player decision is: " + player.changeLastGate());
-                    if (initializer.getGates().get(chosenGate - 1).isEmpty()) {
+                    if (gameGates.get(chosenGate - 1).isEmpty()) {
                         results.addLoss();
                     } else {
                         results.addWin();

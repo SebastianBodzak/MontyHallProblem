@@ -1,7 +1,6 @@
 package com.sebastianbodzak.MontyHallProblem.domain;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by sbod on 18.04.2017.
@@ -13,9 +12,8 @@ public class MontyHall {
     private int playerChoice;
     private int amountOfUncheckedGates;
 
-    public MontyHall(Initializer initializer, Player player, Optional<Integer> chosenGate) {
-        this.gates = initializer.getGates();
-        this.playerChoice = player.chooseGate(gates.size(), chosenGate);
+    public MontyHall(List<Gate> gates) {
+        this.gates = gates;
         this.amountOfUncheckedGates = gates.size();
     }
 
@@ -37,5 +35,9 @@ public class MontyHall {
 
     public int getAmountOfUncheckedGates() {
         return amountOfUncheckedGates;
+    }
+
+    public void setPlayerChoice(int playerChoice) {
+        this.playerChoice = playerChoice;
     }
 }

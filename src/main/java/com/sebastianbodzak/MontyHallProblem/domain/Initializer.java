@@ -7,6 +7,5 @@ import java.util.List;
  */
 public interface Initializer {
 
-    void prepareGame(int quantityOfGates);
-    List<Gate> getGates();
+    List<Gate> prepareGame(int quantityOfGates);
 }

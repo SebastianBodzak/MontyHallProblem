@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class OfflineInitializerTest {
 
-    private final int QuantityOfGates = 10;
+    private final int quantityOfGates = 10;
     private final int expectedEmptyGates = 9;
     private final int expectedGateWithReward = 1;
 
@@ -22,13 +22,12 @@ public class OfflineInitializerTest {
     public void shouldPrepareGame() {
         Initializer initializer = new OfflineInitializer();
 
-        initializer.prepareGame(QuantityOfGates);
+        List<Gate> allGates = initializer.prepareGame(quantityOfGates);
 
-        List<Gate> allGates = initializer.getGates();
-        List<Gate> emptyGates = initializer.getGates().stream().filter(gate -> gate.isEmpty() == true).collect(Collectors.toList());
-        List<Gate> gatesWithReward = initializer.getGates().stream().filter(gate -> gate.isEmpty() == false).collect(Collectors.toList());
-        assertEquals(10, allGates.size());
-        assertEquals(9, emptyGates.size());
-        assertEquals(1, gatesWithReward.size());
+        List<Gate> emptyGates = allGates.stream().filter(gate -> gate.isEmpty() == true).collect(Collectors.toList());
+        List<Gate> gatesWithReward = allGates.stream().filter(gate -> gate.isEmpty() == false).collect(Collectors.toList());
+        assertEquals(quantityOfGates, allGates.size());
+        assertEquals(expectedEmptyGates, emptyGates.size());
+        assertEquals(expectedGateWithReward, gatesWithReward.size());
     }
 }
